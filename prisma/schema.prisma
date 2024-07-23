@@ -11,7 +11,8 @@ datasource db {
 model User {
   uid            String  @id
   displayName    String? 
-  email          String? 
+  email          String?
+  password       String? 
   photoURL       String? 
   emailVerified  Boolean
   phoneNumber    String? 

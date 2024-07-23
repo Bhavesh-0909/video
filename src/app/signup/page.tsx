@@ -5,20 +5,36 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { signInWithGoogle } from "@/utils/Signin"
+import axios from 'axios';
+import { toast } from "@/components/ui/use-toast";
+import { useUserStore } from "@/state/userState"
+import { title } from "process";
 
 export default function LoginForm() {
 
-  const apiCallForSavingUser = async (data) => {
+  const { setUser } = useUserStore()
+
+  const apiCallForSavingUser = async (idToken) => {
     try {
-      const response = await axios.post('/api/auth/signup', data,
+      const response = await axios.post('/api/auth/google', idToken,
                                         {
                                           withCredentials: true,
                                           headers: { 'Content-Type': 'application/json' },
                                         });
-      
+      console.log(response)
+      if(response.status === 200){
+        toast({title:"logged In Successfully"});
+        console.log('User saved successfully');
+        localStorage.setItem('user', response.data.token);
+        setUser(response.data.user)
+      }
+
+      return;
 
     } catch (error) {
-      
+      console.log(error);
+      toast({variant:"destructive", title: "Logged in failed"});
+      return;
     }
   }
 
