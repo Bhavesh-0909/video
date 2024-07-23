@@ -8,9 +8,23 @@ import { signInWithGoogle } from "@/utils/Signin"
 
 export default function LoginForm() {
 
+  const apiCallForSavingUser = async (data) => {
+    try {
+      const response = await axios.post('/api/auth/signup', data,
+                                        {
+                                          withCredentials: true,
+                                          headers: { 'Content-Type': 'application/json' },
+                                        });
+      
+
+    } catch (error) {
+      
+    }
+  }
+
   const HandelSignInWithGoogle = async() => {
     const data = await signInWithGoogle();
-    console.log(data)
+    await apiCallForSavingUser(data);
   }
 
   return (
