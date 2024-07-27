@@ -4,7 +4,8 @@ import "./globals.css";
 import NextTopLoader from "nextjs-toploader";
 import { Toaster } from "@/components/ui/toaster"
 import AuthProvider from "./context/AuthProvider";
-
+import AppLayout from "@/components/AppLayout";
+import App from "next/app";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -28,7 +29,9 @@ export default function RootLayout({
         />
         <AuthProvider>
           <Toaster/>
-          {children}
+          <AppLayout>
+            {children}
+          </AppLayout>
         </AuthProvider>
       </body>
     </html>

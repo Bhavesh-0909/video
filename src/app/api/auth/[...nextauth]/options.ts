@@ -17,8 +17,8 @@ export const options: NextAuthOptions = {
         secret: process.env.NEXTAUTH_SECRET as string,
     },
     pages: {
-        signIn: '/signup',
-        newUser: '/login',
+        signIn: '/login',
+        newUser: '/signup',
     },
     callbacks: {
         async signIn({ user, account, profile }) {

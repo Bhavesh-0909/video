@@ -59,7 +59,7 @@ export default function LoginForm() {
     </div>
     <div className="hidden bg-muted lg:block">
       <Image
-        src="/placeholder.svg"
+        src="/logo.png"
         alt="Image"
         width="1920"
         height="1080"
