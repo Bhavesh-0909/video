@@ -32,7 +32,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 function Navbar() {
   const pathname = usePathname();
   const { data} = useSession();
-  const user = data?.user as string;
+  const user = data?.user;
   return (
     <div
       className={
@@ -120,7 +120,7 @@ function Navbar() {
                     <DropdownMenu>
                         <DropdownMenuTrigger asChild>
                             <Avatar>
-                                <AvatarImage src={user?.image as string } />
+                                <AvatarImage src={user?.image as string} />
                                 <AvatarFallback>CN</AvatarFallback>
                             </Avatar>
                         </DropdownMenuTrigger>
@@ -180,10 +180,29 @@ function Navbar() {
                     href="/profile"
                     className={`${pathname == '/profile' ? 'bg-accent text-accent-foreground' : 'text-muted-foreground'} flex h-10 w-10 items-center justify-center rounded-lg  transition-colors hover:text-foreground md:h-8 md:w-8`}
                   >
-                    <Avatar>
-                      <AvatarImage src={user?.image as string } />
-                      <AvatarFallback>CN</AvatarFallback>
-                    </Avatar>
+                    <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                            <Avatar>
+                                <AvatarImage src={user?.image as string} />
+                                <AvatarFallback>CN</AvatarFallback>
+                            </Avatar>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent className='w-48'>
+                            <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                            <DropdownMenuSeparator />
+                            <DropdownMenuGroup>
+                                <DropdownMenuItem>
+                                    <Link href="/profile">Profile</Link>
+                                </DropdownMenuItem>
+                                <DropdownMenuItem>
+                                    <Link href="/setting">Settings</Link>
+                                </DropdownMenuItem>
+                                <DropdownMenuItem  className='focus:bg-destructive'>
+                                    <button onClick={() => signOut()}>Log Out</button>
+                                </DropdownMenuItem>
+                            </DropdownMenuGroup>
+                        </DropdownMenuContent>
+                    </DropdownMenu>
                     <span className="sr-only">Profile</span>
                   </Link>
                 </TooltipTrigger>
