@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import NextTopLoader from "nextjs-toploader";
 import { Toaster } from "@/components/ui/toaster"
+import AuthProvider from "./context/AuthProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -25,8 +26,10 @@ export default function RootLayout({
           height={2}
           easing="ease"
         />
-        <Toaster/>
-        {children}
+        <AuthProvider>
+          <Toaster/>
+          {children}
+        </AuthProvider>
       </body>
     </html>
   );

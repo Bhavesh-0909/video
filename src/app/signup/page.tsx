@@ -4,45 +4,9 @@ import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { signInWithGoogle } from "@/utils/Signin"
-import axios from 'axios';
-import { toast } from "@/components/ui/use-toast";
-import { useUserStore } from "@/state/userState"
-import { title } from "process";
+import {signIn} from "next-auth/react"
 
 export default function LoginForm() {
-
-  const { setUser } = useUserStore()
-
-  const apiCallForSavingUser = async (idToken) => {
-    try {
-      const response = await axios.post('/api/auth/google', idToken,
-                                        {
-                                          withCredentials: true,
-                                          headers: { 'Content-Type': 'application/json' },
-                                        });
-      console.log(response)
-      if(response.status === 200){
-        toast({title:"logged In Successfully"});
-        console.log('User saved successfully');
-        localStorage.setItem('user', response.data.token);
-        setUser(response.data.user)
-      }
-
-      return;
-
-    } catch (error) {
-      console.log(error);
-      toast({variant:"destructive", title: "Logged in failed"});
-      return;
-    }
-  }
-
-  const HandelSignInWithGoogle = async() => {
-    const data = await signInWithGoogle();
-    await apiCallForSavingUser(data);
-  }
-
   return (
     <div className="w-full lg:grid lg:min-h-[600px] lg:grid-cols-2 xl:max-h-screen">
       <div className="flex flex-col mx-auto items-center justify-center py-12 max-w-[350px] md:max-w-full">
@@ -80,7 +44,7 @@ export default function LoginForm() {
             Create an account
           </Button>
           <Button
-          onClick={HandelSignInWithGoogle}
+          onClick={() => signIn("google")}
           variant="outline" 
           className="w-full">
             Sign up with Google
