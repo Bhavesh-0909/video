@@ -5,8 +5,14 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import {signIn} from "next-auth/react"
+import { redirect } from "next/navigation";
 
 export default function LoginForm() {
+  const HandeLSignInWithGoogle = async() => {
+    await signIn("google");
+    redirect("/");
+  }
+
   return (
     <div className="w-full lg:grid lg:min-h-[600px] lg:grid-cols-2 xl:max-h-screen">
       <div className="flex flex-col mx-auto items-center justify-center py-12 max-w-[350px] md:max-w-full">
@@ -44,7 +50,7 @@ export default function LoginForm() {
             Create an account
           </Button>
           <Button
-          onClick={() => signIn("google")}
+          onClick={() => HandeLSignInWithGoogle()}
           variant="outline" 
           className="w-full">
             Sign up with Google

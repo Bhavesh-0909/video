@@ -5,8 +5,13 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { signIn } from "next-auth/react"
+import { redirect } from "next/navigation";
 
 export default function Page() {
+  const HandeLSignInWithGoogle = async() => {
+    await signIn("google");
+    redirect("/");
+  }
   return (
     <div className="w-full lg:grid lg:min-h-[600px] lg:grid-cols-2 xl:max-h-screen">
       <div className="flex items-center justify-center py-12">
@@ -46,7 +51,7 @@ export default function Page() {
             <Button type="submit" className="w-full">
               Login
             </Button>
-            <Button onClick={() => signIn("google")} variant="outline" className="w-full">
+            <Button onClick={() => HandeLSignInWithGoogle()} variant="outline" className="w-full">
               Login with Google
             </Button>
           </div>
