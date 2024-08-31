@@ -26,17 +26,19 @@ import {
 } from '@/components/ui/tooltip';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { Button } from '@/components/ui/button';
-import { redirect, usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 
 function Navbar() {
   const pathname = usePathname();
+  const { push } = useRouter();
   const { data} = useSession();
-  const user = data?.user;
+  const user =data?.user;
 
-  const HandelLogout = async() => {
-    await signOut();
-    redirect("/login");
+  const handelLogout = async() => {
+    signOut({
+      callbackUrl: '/login', 
+    });
   }
 
   return (
@@ -141,7 +143,7 @@ function Navbar() {
                                     <Link href="/setting">Settings</Link>
                                 </DropdownMenuItem>
                                 <DropdownMenuItem  className='focus:bg-destructive'>
-                                    <button onClick={() => HandelLogout()}>Log Out</button>
+                                    <button onClick={() => handelLogout()}>Log Out</button>
                                 </DropdownMenuItem>
                             </DropdownMenuGroup>
                         </DropdownMenuContent>

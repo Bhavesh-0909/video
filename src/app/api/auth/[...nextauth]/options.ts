@@ -25,7 +25,8 @@ export const options: NextAuthOptions = {
             return true;
         },
         async redirect({url, baseUrl}) {
-          return baseUrl;
+            if (url.startsWith(baseUrl)) return url;
+            return baseUrl;
         },
         async session({session, user}) {
           return session;

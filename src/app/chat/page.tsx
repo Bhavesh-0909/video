@@ -1,10 +1,21 @@
+'use client';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import React from 'react';
+import { useEffect } from 'react';
 import { Video, SquarePen, ListFilter } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
 
-function page() {
+function Page() {
   const tags = ['All', 'Unread', 'Mentions'];
+  const { push } = useRouter();
+  const data = useSession();
+
+  useEffect(() => {
+    if (!data) {
+      push('/login');
+    }
+  }, [data]);
   return (
     <div className="w-full h-full min-h-screen grid grid-cols-4 grid-rows-1">
       <div className="md:col-span-1 col-span-4 w-full max-h-screen overflow-hidden bg-card border-r-2 border">
@@ -95,4 +106,4 @@ function page() {
   );
 }
 
-export default page;
+export default Page;

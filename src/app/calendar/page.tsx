@@ -1,6 +1,6 @@
 'use client';
 import { Calendar } from '@/components/ui/calendar';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   ChevronLeft,
   ChevronRight,
@@ -18,10 +18,18 @@ import {
 } from '@/components/ui/select';
 import { Button } from '@/components/ui/button';
 import { useRouter } from 'next/navigation';
+import { useSession } from 'next-auth/react';
 
 function Page() {
   const [date, setDate] = useState<Date | undefined>(new Date());
   const { push } = useRouter();
+  const data = useSession();
+
+  useEffect(() => {
+    if (!data) {
+      push('/login');
+    }
+  }, [data]);
   
   const handleDateChange = (days: number) => {
     if (date) {

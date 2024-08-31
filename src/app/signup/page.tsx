@@ -4,14 +4,24 @@ import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import {signIn} from "next-auth/react"
-import { redirect } from "next/navigation";
+import {signIn, useSession} from "next-auth/react"
+import { redirect, useRouter } from "next/navigation";
+import { useEffect } from "react";
 
 export default function LoginForm() {
   const HandeLSignInWithGoogle = async() => {
     await signIn("google");
     redirect("/");
   }
+
+  const { push } = useRouter();
+  const data = useSession();
+
+  useEffect(() => {
+    if (!data) {
+      push('/login');
+    }
+  }, [data]);
 
   return (
     <div className="w-full lg:grid lg:min-h-[600px] lg:grid-cols-2 xl:max-h-screen">
