@@ -13,6 +13,7 @@ export default function Page() {
     await signIn("google");
     push("/");
   }
+  
   return (
     <div className="w-full lg:grid lg:min-h-[600px] lg:grid-cols-2 xl:max-h-screen">
       <div className="flex items-center justify-center py-12">
