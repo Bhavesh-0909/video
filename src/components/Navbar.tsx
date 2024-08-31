@@ -121,10 +121,6 @@ function Navbar() {
           <TooltipProvider>
             <Tooltip>
               <TooltipTrigger asChild>
-                <Link
-                  href="/profile"
-                  className={`${pathname == '/profile' ? 'bg-accent text-accent-foreground' : 'text-muted-foreground'} flex h-8 w-8 overflow-hidden items-center justify-center rounded-full object-cover  transition-colors hover:text-foreground md:h-8 md:w-8`}
-                >
                     <DropdownMenu>
                         <DropdownMenuTrigger asChild>
                             <Avatar>
@@ -151,7 +147,7 @@ function Navbar() {
                     </DropdownMenu>
                     
                   <span className="sr-only">Profile</span>
-                </Link>
+                
               </TooltipTrigger>
               <TooltipContent side="right">Profile</TooltipContent>
             </Tooltip>
