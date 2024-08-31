@@ -36,7 +36,7 @@ function Navbar() {
   const user =data?.user;
 
   const handelLogout = async() => {
-    signOut({
+    await signOut({
       callbackUrl: '/login', 
     });
   }
@@ -138,8 +138,10 @@ function Navbar() {
                                 <DropdownMenuItem>
                                     <Link href="/setting">Settings</Link>
                                 </DropdownMenuItem>
-                                <DropdownMenuItem  className='focus:bg-destructive'>
-                                    <button onClick={() => handelLogout()}>Log Out</button>
+                                <DropdownMenuItem>
+                                  <button onClick={() => handelLogout()} className="w-full text-left">
+                                    Log Out
+                                  </button>
                                 </DropdownMenuItem>
                             </DropdownMenuGroup>
                         </DropdownMenuContent>
@@ -180,10 +182,7 @@ function Navbar() {
             <TooltipProvider>
               <Tooltip>
                 <TooltipTrigger asChild>
-                  <Link
-                    href="/profile"
-                    className={`${pathname == '/profile' ? 'bg-accent text-accent-foreground' : 'text-muted-foreground'} flex h-10 w-10 items-center justify-center rounded-lg  transition-colors hover:text-foreground md:h-8 md:w-8`}
-                  >
+                  
                     <DropdownMenu>
                         <DropdownMenuTrigger asChild>
                             <Avatar>
@@ -201,14 +200,15 @@ function Navbar() {
                                 <DropdownMenuItem>
                                     <Link href="/setting">Settings</Link>
                                 </DropdownMenuItem>
-                                <DropdownMenuItem  className='focus:bg-destructive'>
-                                    <button onClick={() => signOut()}>Log Out</button>
+                                <DropdownMenuItem>
+                                  <button onClick={() => handelLogout()} className="w-full text-left">
+                                    Log Out
+                                  </button>
                                 </DropdownMenuItem>
                             </DropdownMenuGroup>
                         </DropdownMenuContent>
                     </DropdownMenu>
                     <span className="sr-only">Profile</span>
-                  </Link>
                 </TooltipTrigger>
                 <TooltipContent side="right">Profile</TooltipContent>
               </Tooltip>
