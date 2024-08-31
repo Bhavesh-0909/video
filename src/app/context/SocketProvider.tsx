@@ -1,20 +1,38 @@
-// 'use client'
-// import React, { createContext, useMemo, useContext } from "react";
-// import { io, Socket } from "socket.io-client";
+'use client';
+import React, { createContext, useMemo, useContext, useEffect } from "react";
+import { io, Socket } from "socket.io-client";
 
-// const SocketContext = createContext(null);
+const SocketContext = createContext<Socket | null>(null);
 
-// export const useSocket = () => {
-//   const socket = useContext(SocketContext);
-//   return socket;
-// };
+export const useSocket = () => {
+  return useContext(SocketContext);
+};
 
-// export const SocketProvider = (props: { children: React.ReactNode }) => {
-//   const socket = useMemo(() => io("localhost:8000"), []);
+export const SocketProvider = ({ children }: { children: React.ReactNode }) => {
+  const socket = useMemo(() => io("http://localhost:3000"), []);
 
-//   return (
-//     <SocketContext.Provider value={socket}>
-//       {props.children}
-//     </SocketContext.Provider>
-//   );
-// };
+  useEffect(() => {
+    const handleConnect = () => {
+      console.log('Connected to server with ID:', socket.id);
+    };
+
+    const handleConnectError = (err: Error) => {
+      console.error('Connection error:', err);
+    };
+
+    socket.on('connect', handleConnect);
+    socket.on('connect_error', handleConnectError);
+
+    return () => {
+      socket.off('connect', handleConnect);
+      socket.off('connect_error', handleConnectError);
+      socket.disconnect();
+    };
+  }, [socket]);
+
+  return (
+    <SocketContext.Provider value={socket}>
+      {children}
+    </SocketContext.Provider>
+  );
+};

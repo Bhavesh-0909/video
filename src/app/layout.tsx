@@ -5,7 +5,7 @@ import NextTopLoader from "nextjs-toploader";
 import { Toaster } from "@/components/ui/toaster"
 import AuthProvider from "./context/AuthProvider";
 import AppLayout from "@/components/AppLayout";
-//import { SocketProvider } from "./context/SocketProvider";
+import { SocketProvider } from "./context/SocketProvider";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -28,10 +28,12 @@ export default function RootLayout({
           easing="ease"
         />
         <AuthProvider>
+          <SocketProvider>
             <Toaster/>
             <AppLayout>
               {children}
             </AppLayout>
+          </SocketProvider>
         </AuthProvider>
       </body>
     </html>
