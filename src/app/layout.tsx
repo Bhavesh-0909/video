@@ -2,10 +2,9 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import NextTopLoader from "nextjs-toploader";
-import { Toaster } from "@/components/ui/toaster"
-import AuthProvider from "./context/AuthProvider";
+import { Toaster } from "@/components/ui/toaster";
 import AppLayout from "@/components/AppLayout";
-import { SocketProvider } from "./context/SocketProvider";
+
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -20,21 +19,17 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${inter.className} dark`}>
+      <body className={`${inter.className} dark overflow-x-hidden`}>
         <NextTopLoader
           color={"#ff0000"}
           initialPosition={0.08}
           height={2}
           easing="ease"
         />
-        <AuthProvider>
-          <SocketProvider>
-            <Toaster/>
-            <AppLayout>
-              {children}
-            </AppLayout>
-          </SocketProvider>
-        </AuthProvider>
+          <Toaster />
+          <AppLayout>
+            {children}
+          </AppLayout>
       </body>
     </html>
   );

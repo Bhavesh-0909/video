@@ -26,14 +26,14 @@ import {
 } from '@/components/ui/tooltip';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { Button } from '@/components/ui/button';
-import { usePathname, useRouter } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 
 function Navbar() {
   const pathname = usePathname();
-  const { push } = useRouter();
   const { data } = useSession();
   const user = data?.user;
+  console.log(user);
 
   const handleLogout = async () => {
     await signOut({
