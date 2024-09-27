@@ -168,7 +168,7 @@ function Navbar() {
       </aside>
       <div className="block md:hidden">
         <Sheet>
-          <div className="px-2 py-2 flex items-center justify-between">
+          <div className="px-2 py-2 flex items-center justify-between border-b-[1px] border-border">
             <SheetTrigger asChild>
               <Button size="icon" variant="outline" className="sm:hidden">
                 <Menu className="h-5 w-5" />
