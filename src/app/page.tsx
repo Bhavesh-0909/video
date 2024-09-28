@@ -11,15 +11,25 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel"
 import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
+import { Input } from "@/components/ui/input";
+import { useRouter } from "next/navigation";
 
 export default function Home() {
+
+  const router = useRouter();
 
   const plugin = React.useRef(
     Autoplay({ delay: 2000, stopOnInteraction: true })
   );
 
   const [ meetcode, setMeetcode ] = React.useState<string>("");
+
+  const DirectToRoom = () => {
+    console.log(meetcode);
+    if(meetcode){
+      router.push(`/loby/${meetcode}`);
+    }
+  }
 
   return (
     <main className="flex flex-wrap md:flex-nowrap max-w-screen min-h-screen items-center justify-center md:justify-between md:gap-10">
@@ -36,7 +46,7 @@ export default function Home() {
             </div>
             <div className=" w-full md:w-2/3 md:border-l-2 md:border-t-0 sm:border-t-2 border-border flex justify-center items-center gap-3 px-2 py-2">
               <Input value={meetcode} onChange={(e)=> setMeetcode(e.target.value)} placeholder="Enter a code or link" />
-              <Button disabled={meetcode ? false : true}>Join</Button>
+              <Button onClick={DirectToRoom} disabled={meetcode ? false : true}>Join</Button>
             </div>
           </div>
         </div>

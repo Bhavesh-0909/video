@@ -44,7 +44,7 @@ function Navbar() {
   return (
     <div
       className={
-        pathname === '/login' || pathname === '/signup' ? 'hidden' : 'block'
+        pathname === '/login' || pathname === '/signup' || pathname.includes("/loby") ? 'hidden' : 'block'
       }
     >
       <aside className="fixed top-0 inset-x-0 md:inset-y-0 md:left-0 z-10 hidden w-full md:w-14 flex-col border-r bg-background sm:flex">
