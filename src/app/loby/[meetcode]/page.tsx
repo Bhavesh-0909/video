@@ -4,51 +4,77 @@ import { Camera, CameraOff, Mic, MicOff } from 'lucide-react';
 import { useSession } from 'next-auth/react';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
+import { set } from 'date-fns';
 
 function Page() {
     const { data } = useSession();
-    const videoRef = useRef<HTMLVideoElement>(null); // Reference for the video element
-    const [stream, setStream] = useState<MediaStream | null>(null); // State to manage the media stream
-    const [cameraOn, setCameraOn] = useState(true); // State to manage the camera on/off
-    const [audioOn, setAudioOn] = useState(true); // State to manage the microphone on/off
-
-    // Start the media stream with both video and audio
-    const startStream = useCallback(async () => {
-        try {
-            const mediaStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
-            setStream(mediaStream);
-            if (videoRef.current) {
-                videoRef.current.srcObject = mediaStream;
-            }
-        } catch (error) {
-            console.error('Error accessing media devices:', error);
-        }
-    }, []);
-
-    const toggleTrack = useCallback((trackType: 'video' | 'audio', enable: boolean) => {
-        if (stream) {
-            const track = stream.getTracks().find(t => t.kind === trackType);
-            if (track) {
-                track.enabled = enable; // Set the enabled property to false to turn off the camera without stopping it
-            }
-        }
-    }, [stream]);
-
-    const toggleCamera = useCallback(() => {
-        toggleTrack('video', !cameraOn);
-        setCameraOn(prev => !prev);
-    }, [cameraOn, toggleTrack]);
-
-    const toggleAudio = useCallback(() => {
-        toggleTrack('audio', !audioOn);
-        setAudioOn(prev => !prev);
-    }, [audioOn, toggleTrack]);
-
+    const [videoEnabled, setVideoEnabled] = useState<boolean>(false);
+    const [audioEnabled, setAudioEnabled] = useState<boolean>(false);
+    const [mediaStream, setMediaStream] = useState<MediaStream | null>(null);
+    const [error, setError] = useState<string>('');
+    const videoElementRef = useRef<HTMLVideoElement | null>(null);
+  
     useEffect(() => {
-        if (!stream) {
-            startStream(); 
+      return () => {
+        if (mediaStream) {
+          mediaStream.getTracks().forEach((track) => track.stop());
+        } else {
+          requestPermissions();
         }
-    }, [startStream, stream]);
+      };
+    }, [mediaStream]);
+  
+    const requestPermissions = async (): Promise<void> => {
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({
+          video: true,
+          audio: true,
+        });
+        setMediaStream(stream);
+        setVideoEnabled(true);
+        setAudioEnabled(true);
+        if (videoElementRef.current) {
+          videoElementRef.current.srcObject = stream;
+        }
+      } catch (err) {
+        setError('Permission denied or an error occurred.');
+        console.error(err);
+      }
+    };
+  
+    const toggleVideo = async () => {
+      if (mediaStream) {
+        const videoTrack = mediaStream.getVideoTracks()[0];
+        if (videoTrack) {
+          videoTrack.enabled = !videoTrack.enabled;
+          setVideoEnabled(videoTrack.enabled);
+          const stream = await navigator.mediaDevices.getUserMedia({
+            video: videoTrack.enabled,
+            audio: audioEnabled,
+          });
+          setMediaStream(stream);
+          videoElementRef.current!.srcObject = stream;
+        } else {
+          const stream = await navigator.mediaDevices.getUserMedia({
+            video: true,
+            audio: audioEnabled,
+          });
+            setMediaStream(stream);
+            setVideoEnabled(true);
+            videoElementRef.current!.srcObject = stream;
+      }
+    };
+};
+  
+    const toggleAudio = (): void => {
+      if (mediaStream) {
+        const audioTrack = mediaStream.getAudioTracks()[0];
+        if (audioTrack) {
+          audioTrack.enabled = !audioTrack.enabled;
+          setAudioEnabled(audioTrack.enabled);
+        }
+      }
+    };
 
     return (
         <main className='w-full h-full min-h-screen flex flex-col justify-center items-center relative'>
@@ -72,7 +98,7 @@ function Page() {
                 <div className='w-1/2 flex justify-center items-center relative'>
                     <div className='w-full h-72'>
                         <video 
-                            ref={videoRef} 
+                            ref={videoElementRef} 
                             autoPlay 
                             playsInline 
                             controls={false} 
@@ -80,11 +106,11 @@ function Page() {
                         />
                     </div>
                     <div className='w-full flex items-center justify-center gap-3 absolute bottom-2'>
-                        <button onClick={toggleCamera} className='w-10 h-10 rounded-full bg-muted flex justify-center items-center'>
-                            {cameraOn ? <Camera /> : <CameraOff />}
+                        <button onClick={toggleVideo} className='w-10 h-10 rounded-full bg-muted flex justify-center items-center'>
+                            {videoEnabled ? <Camera /> : <CameraOff />}
                         </button>
                         <button onClick={toggleAudio} className='w-10 h-10 rounded-full bg-muted flex justify-center items-center'>
-                            {audioOn ? <Mic /> : <MicOff />}
+                            {audioEnabled ? <Mic /> : <MicOff />}
                         </button>
                     </div>
                 </div>
