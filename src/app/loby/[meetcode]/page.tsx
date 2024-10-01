@@ -1,10 +1,9 @@
 "use client";
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Camera, CameraOff, Mic, MicOff } from "lucide-react";
 import { useSession } from "next-auth/react";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import { set } from "date-fns";
 
 function Page() {
   const { data } = useSession();

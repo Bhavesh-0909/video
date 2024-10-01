@@ -16,6 +16,7 @@ function Page() {
       push("/login");
     }
   }, [data]);
+  
   return (
     <div className="w-full h-full min-h-screen grid grid-cols-4 grid-rows-1">
       <div className="md:col-span-1 col-span-4 w-full max-h-screen overflow-hidden bg-card border-r-2 border">
