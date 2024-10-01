@@ -1,19 +1,19 @@
-'use client';
-import Image from "next/image"
-import Link from "next/link"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { signIn } from "next-auth/react"
+"use client";
+import Image from "next/image";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 
 export default function Page() {
   const { push } = useRouter();
-  const HandeLSignInWithGoogle = async() => {
+  const HandeLSignInWithGoogle = async () => {
     await signIn("google");
     push("/");
-  }
-  
+  };
+
   return (
     <div className="w-full lg:grid lg:min-h-[600px] lg:grid-cols-2 xl:max-h-screen">
       <div className="flex items-center justify-center py-12">
@@ -44,16 +44,21 @@ export default function Page() {
                   Forgot your password?
                 </Link>
               </div>
-              <Input 
-                id="password" 
+              <Input
+                id="password"
                 type="password"
-                placeholder="********" 
-                required />
+                placeholder="********"
+                required
+              />
             </div>
             <Button type="submit" className="w-full">
               Login
             </Button>
-            <Button onClick={() => HandeLSignInWithGoogle()} variant="outline" className="w-full">
+            <Button
+              onClick={() => HandeLSignInWithGoogle()}
+              variant="outline"
+              className="w-full"
+            >
               Login with Google
             </Button>
           </div>
@@ -75,7 +80,7 @@ export default function Page() {
         />
       </div>
     </div>
-  )
+  );
 }
 
 function push(arg0: string) {

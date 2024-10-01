@@ -1,19 +1,19 @@
-'use client';
-import { ScrollArea } from '@/components/ui/scroll-area';
-import { useEffect } from 'react';
-import { Video, SquarePen, ListFilter } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { useSession } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
+"use client";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { useEffect } from "react";
+import { Video, SquarePen, ListFilter } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 function Page() {
-  const tags = ['All', 'Unread', 'Mentions'];
+  const tags = ["All", "Unread", "Mentions"];
   const { push } = useRouter();
   const data = useSession();
 
   useEffect(() => {
     if (!data) {
-      push('/login');
+      push("/login");
     }
   }, [data]);
   return (

@@ -1,13 +1,13 @@
-'use client';
-import { Calendar } from '@/components/ui/calendar';
-import { useEffect, useState } from 'react';
+"use client";
+import { Calendar } from "@/components/ui/calendar";
+import { useEffect, useState } from "react";
 import {
   ChevronLeft,
   ChevronRight,
   CalendarDays,
   Search,
   Link,
-} from 'lucide-react';
+} from "lucide-react";
 import {
   Select,
   SelectContent,
@@ -15,25 +15,50 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select';
-import { Button } from '@/components/ui/button';
-import { useRouter } from 'next/navigation';
-import { useSession } from 'next-auth/react';
-import { ScrollArea } from '@/components/ui/scroll-area';
+} from "@/components/ui/select";
+import { Button } from "@/components/ui/button";
+import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 function Page() {
   const [date, setDate] = useState<Date | undefined>(new Date());
   const { push } = useRouter();
   const data = useSession();
 
-  const timeStamps = ["12 am", "1 am", "2 am", "3 am", "4 am", "5 am", "6 am", "7 am", "8 am", "9 am", "10 am", "11 am", "12 pm", "1 pm", "2 pm", "3 pm", "4 pm", "5 pm", "6 pm", "7 pm", "8 pm", "9 pm", "10 pm", "11 pm"];
+  const timeStamps = [
+    "12 am",
+    "1 am",
+    "2 am",
+    "3 am",
+    "4 am",
+    "5 am",
+    "6 am",
+    "7 am",
+    "8 am",
+    "9 am",
+    "10 am",
+    "11 am",
+    "12 pm",
+    "1 pm",
+    "2 pm",
+    "3 pm",
+    "4 pm",
+    "5 pm",
+    "6 pm",
+    "7 pm",
+    "8 pm",
+    "9 pm",
+    "10 pm",
+    "11 pm",
+  ];
 
   useEffect(() => {
     if (!data) {
-      push('/login');
+      push("/login");
     }
   }, [data]);
-  
+
   const handleDateChange = (days: number) => {
     if (date) {
       const newDate = new Date(date);
@@ -77,14 +102,14 @@ function Page() {
               <ChevronRight className="h-5 w-5" />
             </Button>
           </div>
-          
+
           <div className="text-primary font-bold text-lg">
             {date?.toDateString()}
           </div>
 
-            <Button className="p-1.5 rounded-lg border border-secondary">
-              <Link className="h-5 w-5" />
-            </Button>
+          <Button className="p-1.5 rounded-lg border border-secondary">
+            <Link className="h-5 w-5" />
+          </Button>
         </header>
         <div className="w-full h-[90vh]">
           <ScrollArea className="w-full h-full">

@@ -26,10 +26,8 @@ export default function RootLayout({
           height={2}
           easing="ease"
         />
-          <Toaster />
-          <AppLayout>
-            {children}
-          </AppLayout>
+        <Toaster />
+        <AppLayout>{children}</AppLayout>
       </body>
     </html>
   );

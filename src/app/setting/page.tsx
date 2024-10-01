@@ -1,7 +1,7 @@
-'use client';
-import { useSession } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
-import React, { useEffect } from 'react'
+"use client";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
+import React, { useEffect } from "react";
 
 function Page() {
   const { push } = useRouter();
@@ -9,13 +9,11 @@ function Page() {
 
   useEffect(() => {
     if (!data) {
-      push('/login');
+      push("/login");
     }
   }, [data]);
 
-  return (
-    <div>Page</div>
-  )
+  return <div>Page</div>;
 }
 
-export default Page
+export default Page;

@@ -1,6 +1,6 @@
-'use client';
-import Link from 'next/link';
-import { signOut, useSession } from 'next-auth/react';
+"use client";
+import Link from "next/link";
+import { signOut, useSession } from "next-auth/react";
 import {
   Home,
   MessageCircle,
@@ -8,26 +8,26 @@ import {
   CalendarDays,
   Settings,
   Menu,
-} from 'lucide-react';
+} from "lucide-react";
 import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuGroup,
-    DropdownMenuItem,
-    DropdownMenuLabel,
-    DropdownMenuSeparator,
-    DropdownMenuTrigger,
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from '@/components/ui/tooltip';
-import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
-import { Button } from '@/components/ui/button';
-import { usePathname } from 'next/navigation';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+} from "@/components/ui/tooltip";
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { Button } from "@/components/ui/button";
+import { usePathname } from "next/navigation";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 function Navbar() {
   const pathname = usePathname();
@@ -37,14 +37,18 @@ function Navbar() {
 
   const handleLogout = async () => {
     await signOut({
-      callbackUrl: '/login', 
+      callbackUrl: "/login",
     });
-  }
+  };
 
   return (
     <div
       className={
-        pathname === '/login' || pathname === '/signup' || pathname.includes("/loby") ? 'hidden' : 'block'
+        pathname === "/login" ||
+        pathname === "/signup" ||
+        pathname.includes("/loby")
+          ? "hidden"
+          : "block"
       }
     >
       <aside className="fixed top-0 inset-x-0 md:inset-y-0 md:left-0 z-10 hidden w-full md:w-14 flex-col border-r bg-background sm:flex">
@@ -65,7 +69,7 @@ function Navbar() {
               <TooltipTrigger asChild>
                 <Link
                   href="/"
-                  className={`${pathname === '/' ? 'bg-accent text-accent-foreground' : 'text-muted-foreground'} flex h-9 w-9 items-center justify-center rounded-lg  transition-colors hover:text-foreground md:h-8 md:w-8`}
+                  className={`${pathname === "/" ? "bg-accent text-accent-foreground" : "text-muted-foreground"} flex h-9 w-9 items-center justify-center rounded-lg  transition-colors hover:text-foreground md:h-8 md:w-8`}
                 >
                   <Home className="h-5 w-5" />
                   <span className="sr-only">Home</span>
@@ -79,7 +83,7 @@ function Navbar() {
               <TooltipTrigger asChild>
                 <Link
                   href="/chat"
-                  className={`${pathname === '/chat' ? 'bg-accent text-accent-foreground' : 'text-muted-foreground'} flex h-9 w-9 items-center justify-center rounded-lg  transition-colors hover:text-foreground md:h-8 md:w-8`}
+                  className={`${pathname === "/chat" ? "bg-accent text-accent-foreground" : "text-muted-foreground"} flex h-9 w-9 items-center justify-center rounded-lg  transition-colors hover:text-foreground md:h-8 md:w-8`}
                 >
                   <MessageCircle className="h-5 w-5" />
                   <span className="sr-only">Chat</span>
@@ -93,7 +97,7 @@ function Navbar() {
               <TooltipTrigger asChild>
                 <Link
                   href="/team"
-                  className={`${pathname === '/team' ? 'bg-accent text-accent-foreground' : 'text-muted-foreground'} flex h-9 w-9 items-center justify-center rounded-lg  transition-colors hover:text-foreground md:h-8 md:w-8`}
+                  className={`${pathname === "/team" ? "bg-accent text-accent-foreground" : "text-muted-foreground"} flex h-9 w-9 items-center justify-center rounded-lg  transition-colors hover:text-foreground md:h-8 md:w-8`}
                 >
                   <Users2 className="h-5 w-5" />
                   <span className="sr-only">Teams</span>
@@ -107,7 +111,7 @@ function Navbar() {
               <TooltipTrigger asChild>
                 <Link
                   href="/calendar"
-                  className={`${pathname === '/calendar' ? 'bg-accent text-accent-foreground' : 'text-muted-foreground'} flex h-9 w-9 items-center justify-center rounded-lg  transition-colors hover:text-foreground md:h-8 md:w-8`}
+                  className={`${pathname === "/calendar" ? "bg-accent text-accent-foreground" : "text-muted-foreground"} flex h-9 w-9 items-center justify-center rounded-lg  transition-colors hover:text-foreground md:h-8 md:w-8`}
                 >
                   <CalendarDays className="h-5 w-5" />
                   <span className="sr-only">Calendar</span>
@@ -121,31 +125,34 @@ function Navbar() {
           <TooltipProvider>
             <Tooltip>
               <TooltipTrigger asChild>
-                    <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                            <Avatar>
-                                <AvatarImage src={user?.image as string} />
-                                <AvatarFallback>CN</AvatarFallback>
-                            </Avatar>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent className='w-48'>
-                            <DropdownMenuLabel>My Account</DropdownMenuLabel>
-                            <DropdownMenuSeparator />
-                            <DropdownMenuGroup>
-                                <DropdownMenuItem>
-                                    <Link href="/profile">Profile</Link>
-                                </DropdownMenuItem>
-                                <DropdownMenuItem>
-                                    <Link href="/setting">Settings</Link>
-                                </DropdownMenuItem>
-                                <DropdownMenuItem>
-                                  <button onClick={handleLogout} className="w-full text-left">
-                                    Log Out
-                                  </button>
-                                </DropdownMenuItem>
-                            </DropdownMenuGroup>
-                        </DropdownMenuContent>
-                    </DropdownMenu>
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Avatar>
+                      <AvatarImage src={user?.image as string} />
+                      <AvatarFallback>CN</AvatarFallback>
+                    </Avatar>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent className="w-48">
+                    <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuGroup>
+                      <DropdownMenuItem>
+                        <Link href="/profile">Profile</Link>
+                      </DropdownMenuItem>
+                      <DropdownMenuItem>
+                        <Link href="/setting">Settings</Link>
+                      </DropdownMenuItem>
+                      <DropdownMenuItem>
+                        <button
+                          onClick={handleLogout}
+                          className="w-full text-left"
+                        >
+                          Log Out
+                        </button>
+                      </DropdownMenuItem>
+                    </DropdownMenuGroup>
+                  </DropdownMenuContent>
+                </DropdownMenu>
               </TooltipTrigger>
               <TooltipContent side="right">Profile</TooltipContent>
             </Tooltip>
@@ -155,7 +162,7 @@ function Navbar() {
               <TooltipTrigger asChild>
                 <Link
                   href="/setting"
-                  className={`${pathname === '/setting' ? 'bg-accent text-accent-foreground' : 'text-muted-foreground'} flex h-9 w-9 items-center justify-center rounded-lg  transition-colors hover:text-foreground md:h-8 md:w-8`}
+                  className={`${pathname === "/setting" ? "bg-accent text-accent-foreground" : "text-muted-foreground"} flex h-9 w-9 items-center justify-center rounded-lg  transition-colors hover:text-foreground md:h-8 md:w-8`}
                 >
                   <Settings className="h-5 w-5" />
                   <span className="sr-only">Settings</span>
@@ -178,31 +185,34 @@ function Navbar() {
             <TooltipProvider>
               <Tooltip>
                 <TooltipTrigger asChild>
-                    <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                            <Avatar>
-                                <AvatarImage src={user?.image as string} />
-                                <AvatarFallback>CN</AvatarFallback>
-                            </Avatar>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent className='w-48'>
-                            <DropdownMenuLabel>My Account</DropdownMenuLabel>
-                            <DropdownMenuSeparator />
-                            <DropdownMenuGroup>
-                                <DropdownMenuItem>
-                                    <Link href="/profile">Profile</Link>
-                                </DropdownMenuItem>
-                                <DropdownMenuItem>
-                                    <Link href="/setting">Settings</Link>
-                                </DropdownMenuItem>
-                                <DropdownMenuItem>
-                                  <button onClick={handleLogout} className="w-full text-left">
-                                    Log Out
-                                  </button>
-                                </DropdownMenuItem>
-                            </DropdownMenuGroup>
-                        </DropdownMenuContent>
-                    </DropdownMenu>
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Avatar>
+                        <AvatarImage src={user?.image as string} />
+                        <AvatarFallback>CN</AvatarFallback>
+                      </Avatar>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent className="w-48">
+                      <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                      <DropdownMenuSeparator />
+                      <DropdownMenuGroup>
+                        <DropdownMenuItem>
+                          <Link href="/profile">Profile</Link>
+                        </DropdownMenuItem>
+                        <DropdownMenuItem>
+                          <Link href="/setting">Settings</Link>
+                        </DropdownMenuItem>
+                        <DropdownMenuItem>
+                          <button
+                            onClick={handleLogout}
+                            className="w-full text-left"
+                          >
+                            Log Out
+                          </button>
+                        </DropdownMenuItem>
+                      </DropdownMenuGroup>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
                 </TooltipTrigger>
                 <TooltipContent side="right">Profile</TooltipContent>
               </Tooltip>
@@ -212,35 +222,35 @@ function Navbar() {
             <nav className="grid grid-flow-row auto-rows-max text-sm">
               <Link
                 href="/"
-                className={`${pathname === '/' ? 'bg-accent text-accent-foreground' : 'text-muted-foreground'} group flex h-10 w-full items-center gap-2 px-4 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground`}
+                className={`${pathname === "/" ? "bg-accent text-accent-foreground" : "text-muted-foreground"} group flex h-10 w-full items-center gap-2 px-4 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground`}
               >
                 <Home className="h-5 w-5" />
                 <span>Home</span>
               </Link>
               <Link
                 href="/chat"
-                className={`${pathname === '/chat' ? 'bg-accent text-accent-foreground' : 'text-muted-foreground'} group flex h-10 w-full items-center gap-2 px-4 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground`}
+                className={`${pathname === "/chat" ? "bg-accent text-accent-foreground" : "text-muted-foreground"} group flex h-10 w-full items-center gap-2 px-4 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground`}
               >
                 <MessageCircle className="h-5 w-5" />
                 <span>Chat</span>
               </Link>
               <Link
                 href="/team"
-                className={`${pathname === '/team' ? 'bg-accent text-accent-foreground' : 'text-muted-foreground'} group flex h-10 w-full items-center gap-2 px-4 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground`}
+                className={`${pathname === "/team" ? "bg-accent text-accent-foreground" : "text-muted-foreground"} group flex h-10 w-full items-center gap-2 px-4 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground`}
               >
                 <Users2 className="h-5 w-5" />
                 <span>Team</span>
               </Link>
               <Link
                 href="/calendar"
-                className={`${pathname === '/calendar' ? 'bg-accent text-accent-foreground' : 'text-muted-foreground'} group flex h-10 w-full items-center gap-2 px-4 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground`}
+                className={`${pathname === "/calendar" ? "bg-accent text-accent-foreground" : "text-muted-foreground"} group flex h-10 w-full items-center gap-2 px-4 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground`}
               >
                 <CalendarDays className="h-5 w-5" />
                 <span>Calendar</span>
               </Link>
               <Link
                 href="/setting"
-                className={`${pathname === '/setting' ? 'bg-accent text-accent-foreground' : 'text-muted-foreground'} group flex h-10 w-full items-center gap-2 px-4 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground`}
+                className={`${pathname === "/setting" ? "bg-accent text-accent-foreground" : "text-muted-foreground"} group flex h-10 w-full items-center gap-2 px-4 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground`}
               >
                 <Settings className="h-5 w-5" />
                 <span>Settings</span>

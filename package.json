@@ -6,7 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "format": "npx prettier . --write",
+    "check": "npx prettier . --check"
   },
   "dependencies": {
     "@prisma/client": "^5.17.0",
@@ -34,6 +36,7 @@
     "next": "14.2.5",
     "next-auth": "^4.24.7",
     "nextjs-toploader": "^1.6.12",
+    "prettier": "^3.3.3",
     "react": "^18",
     "react-big-calendar": "^1.13.1",
     "react-day-picker": "^8.10.1",

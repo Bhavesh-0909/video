@@ -1,25 +1,25 @@
-'use client';
-import Link from "next/link"
-import Image from "next/image"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import {signIn, useSession} from "next-auth/react"
+"use client";
+import Link from "next/link";
+import Image from "next/image";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { signIn, useSession } from "next-auth/react";
 import { redirect, useRouter } from "next/navigation";
 import { useEffect } from "react";
 
 export default function LoginForm() {
-  const HandeLSignInWithGoogle = async() => {
+  const HandeLSignInWithGoogle = async () => {
     await signIn("google");
     redirect("/");
-  }
+  };
 
   const { push } = useRouter();
   const data = useSession();
 
   useEffect(() => {
     if (!data) {
-      push('/login');
+      push("/login");
     }
   }, [data]);
 
@@ -27,7 +27,7 @@ export default function LoginForm() {
     <div className="w-full lg:grid lg:min-h-[600px] lg:grid-cols-2 xl:max-h-screen">
       <div className="flex flex-col mx-auto items-center justify-center py-12 max-w-[350px] md:max-w-full">
         <div className="grid gap-4">
-        <div className="grid gap-2 text-center">
+          <div className="grid gap-2 text-center">
             <h1 className="text-3xl font-bold">Sign Up</h1>
             <p className="text-balance text-muted-foreground">
               Enter your email below to login to your account
@@ -60,9 +60,10 @@ export default function LoginForm() {
             Create an account
           </Button>
           <Button
-          onClick={() => HandeLSignInWithGoogle()}
-          variant="outline" 
-          className="w-full">
+            onClick={() => HandeLSignInWithGoogle()}
+            variant="outline"
+            className="w-full"
+          >
             Sign up with Google
           </Button>
         </div>
@@ -72,16 +73,16 @@ export default function LoginForm() {
             Log in
           </Link>
         </div>
+      </div>
+      <div className="hidden bg-muted lg:block">
+        <Image
+          src="/logo.png"
+          alt="Image"
+          width="1920"
+          height="1080"
+          className="h-full w-full object-cover dark:brightness-[0.2] dark:grayscale"
+        />
+      </div>
     </div>
-    <div className="hidden bg-muted lg:block">
-      <Image
-        src="/logo.png"
-        alt="Image"
-        width="1920"
-        height="1080"
-        className="h-full w-full object-cover dark:brightness-[0.2] dark:grayscale"
-      />
-    </div>
-  </div>
-  )
+  );
 }
