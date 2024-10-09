@@ -4,6 +4,7 @@ import "./globals.css";
 import NextTopLoader from "nextjs-toploader";
 import { Toaster } from "@/components/ui/toaster";
 import AppLayout from "@/components/AppLayout";
+import { SocketProvider } from "@/context/SocketContext";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -27,7 +28,10 @@ export default function RootLayout({
           easing="ease"
         />
         <Toaster />
-        <AppLayout>{children}</AppLayout>
+        <SocketProvider>
+          <AppLayout>{children}</AppLayout>
+        </SocketProvider>
+        
       </body>
     </html>
   );

@@ -1,12 +1,18 @@
 "use client";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { Camera, CameraOff, Mic, MicOff } from "lucide-react";
 import { useSession } from "next-auth/react";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
+import { useSearchParams, useRouter } from "next/navigation";
+import { useSocket } from "@/context/SocketContext";
 
 function Page() {
-  const { data } = useSession();
+  const { socket } = useSocket();
+  const router = useRouter();
+  const {data} = useSession();
+  const searchParam = useSearchParams();
+  const roomId = searchParam.get("meetcode");
   const [videoEnabled, setVideoEnabled] = useState<boolean>(false);
   const [audioEnabled, setAudioEnabled] = useState<boolean>(false);
   const [mediaStream, setMediaStream] = useState<MediaStream | null>(null);
@@ -75,6 +81,29 @@ function Page() {
     }
   };
 
+  const handleJoinRoom = useCallback(() => {
+    if (socket) {
+      console.log(socket);
+      socket.emit("room:join", { email: data?.user?.email, room: roomId });
+    }
+  }, [socket, data, roomId]);
+
+  const handelRoomJoined = useCallback((data) => {
+    const {room} = data;
+    router.push(`/video/${room}`);
+  }, [router]);
+
+  useEffect(() => {
+    if(socket) {
+    socket.on("room:join", handelRoomJoined);
+    }
+    return () => {
+      if(socket) {
+      socket.off("room:join", handelRoomJoined);
+      }
+    };
+  }, [socket, handelRoomJoined]);
+
   return (
     <main className="w-full h-full min-h-screen flex flex-col justify-center items-center relative">
       <nav className="w-full h-24 flex justify-between items-center px-20 absolute top-0">
@@ -127,7 +156,7 @@ function Page() {
           <h1 className="text-4xl font-semibold text-primary-foreground">
             Ready to Join?
           </h1>
-          <Button className="w-32 h-12 text-2xl font-semibold rounded-full">
+          <Button onClick={handleJoinRoom} className="w-32 h-12 text-2xl font-semibold rounded-full">
             Join
           </Button>
         </div>
