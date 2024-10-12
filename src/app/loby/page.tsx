@@ -1,16 +1,15 @@
-"use client";
+'use client';
 import { useSession } from "next-auth/react";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { ZegoUIKitPrebuilt } from '@zegocloud/zego-uikit-prebuilt';
-import { randomUUID } from "crypto";
 
 function Page() {
   const { data } = useSession();
-  const searchParam = useSearchParams();
-  const roomId = searchParam.get("meetcode");
+  const router = useRouter();
+  const roomId = useSearchParams().get("roomId");
+  console.log(roomId);
 
   const myMeeting = (element: any) => {
-    async function config() {
     if (!element) return;
     const appID = process.env.NEXT_PUBLIC_ZEGO_APP_ID;
     const serverSecret = process.env.NEXT_PUBLIC_ZEGO_SERVER_SECRET;
@@ -19,14 +18,24 @@ function Page() {
       console.error("App ID or Server Secret is not set!");
       return;
     }
-
+    if (!data?.user?.name) {
+      console.error("User email or name is not set!");
+      return;
+    }
+    if (!roomId) {
+      console.error("Room ID is not set!");
+      return;
+    }
+    const uuid = Math.floor(Math.random() * (100000 - 10000 + 1)) + 10000
+    
     const kitToken = ZegoUIKitPrebuilt.generateKitTokenForProduction(
-      parseInt(appID),
-      serverSecret,
+      parseInt(appID as string),
+      serverSecret as string,
       roomId as string,             
-      randomUUID(),       
-      data?.user?.name as string 
+      uuid.toString(),      
+      data?.user?.name as string, 
     );
+    console.log(kitToken);
     const zp = ZegoUIKitPrebuilt.create(kitToken);
 
     if (!zp) {
@@ -43,7 +52,10 @@ function Page() {
         },
       ],
       scenario: {
-        mode: ZegoUIKitPrebuilt.GroupCall, 
+        mode: ZegoUIKitPrebuilt.GroupCall,
+        config: {
+          role: ZegoUIKitPrebuilt.Host,
+        }, 
       },
       onUserAvatarSetter: (userList) => {
         userList.forEach((user) => {
@@ -62,12 +74,10 @@ function Page() {
       showRequestToCohostButton: true,
       liveNotStartedTextForAudience: 'Waiting for host to start the live',
     });
-  }
-  config();
   };
 
   return (
-    <div className="w-full h-full min-h-screen" ref={(element)=> myMeeting(element)}>
+    <div className="w-full h-full mt-10" ref={(element) => { myMeeting(element); }}>
     </div>
   );
 }

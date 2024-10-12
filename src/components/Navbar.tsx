@@ -47,7 +47,7 @@ function Navbar() {
       className={
         pathname === "/login" ||
         pathname === "/signup" ||
-        pathname.startsWith("/loby/")
+        pathname === "/loby"
           ? "hidden"
           : "block"
       }
@@ -59,6 +59,8 @@ function Navbar() {
             className="group flex h-10 w-10 shrink-0 items-center justify-center gap-2 text-lg font-semibold text-primary-foreground md:h-10 md:w-10 md:text-base"
           >
             <Image
+              width={10}
+              height={10}
               src="/visual-logo.ico"
               alt="logo"
               className="h-full w-full transition-all group-hover:scale-110"

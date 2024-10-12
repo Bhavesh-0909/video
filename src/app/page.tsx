@@ -24,9 +24,8 @@ export default function Home() {
   const [meetcode, setMeetcode] = React.useState<string>("");
 
   const DirectToRoom = () => {
-    console.log(meetcode);
     if (meetcode) {
-      router.push(`/loby/${meetcode}`);
+      router.push(`/loby?roomId=${meetcode}`);
     }
   };
 
