@@ -10,6 +10,7 @@ function Page() {
   const roomId = searchParam.get("meetcode");
 
   const myMeeting = (element: any) => {
+    async function config() {
     if (!element) return;
     const appID = process.env.NEXT_PUBLIC_ZEGO_APP_ID;
     const serverSecret = process.env.NEXT_PUBLIC_ZEGO_SERVER_SECRET;
@@ -61,6 +62,8 @@ function Page() {
       showRequestToCohostButton: true,
       liveNotStartedTextForAudience: 'Waiting for host to start the live',
     });
+  }
+  config();
   };
 
   return (
