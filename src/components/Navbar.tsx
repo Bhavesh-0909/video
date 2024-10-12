@@ -28,6 +28,7 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
 import { usePathname } from "next/navigation";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import Image from "next/image";
 
 function Navbar() {
   const pathname = usePathname();
@@ -46,7 +47,7 @@ function Navbar() {
       className={
         pathname === "/login" ||
         pathname === "/signup" ||
-        pathname.includes("/loby")
+        pathname.startsWith("/loby/")
           ? "hidden"
           : "block"
       }
@@ -57,7 +58,7 @@ function Navbar() {
             href="/"
             className="group flex h-10 w-10 shrink-0 items-center justify-center gap-2 text-lg font-semibold text-primary-foreground md:h-10 md:w-10 md:text-base"
           >
-            <img
+            <Image
               src="/visual-logo.ico"
               alt="logo"
               className="h-full w-full transition-all group-hover:scale-110"
