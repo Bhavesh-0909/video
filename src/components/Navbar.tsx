@@ -45,9 +45,7 @@ function Navbar() {
   return (
     <div
       className={
-        pathname === "/login" ||
-        pathname === "/signup" ||
-        pathname === "/loby"
+        pathname === "/login" || pathname === "/signup" || pathname === "/loby"
           ? "hidden"
           : "block"
       }

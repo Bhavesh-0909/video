@@ -27,7 +27,7 @@ export default function RootLayout({
           easing="ease"
         />
         <Toaster />
-          <AppLayout>{children}</AppLayout>
+        <AppLayout>{children}</AppLayout>
       </body>
     </html>
   );
