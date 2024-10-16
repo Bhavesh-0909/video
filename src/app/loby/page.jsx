@@ -3,6 +3,7 @@ import { useSession } from "next-auth/react";
 import { useSearchParams } from "next/navigation";
 import { ZegoUIKitPrebuilt } from "@zegocloud/zego-uikit-prebuilt";
 import { generateToken04 } from "@/config/token";
+import { useEffect, useState } from "react";
 
 function randomID(len) {
   let result = '';
@@ -17,11 +18,17 @@ function randomID(len) {
 
 function Page() {
   const { data } = useSession();
-  const roomID = useSearchParams().get("roomId");
+  const roomID = useSearchParams()?.get("roomId"); // Ensure roomID is accessed correctly
   const userID = randomID(5);
+  const [isClient, setIsClient] = useState(false); // Track if we're on the client
+
+  useEffect(() => {
+    // Only set the flag to true after the component has mounted on the client
+    setIsClient(true);
+  }, []);
 
   const myMeeting = async (element) => {
-    if (!element) return; // Ensure no return type except void
+    if (!element || !isClient) return; // Ensure code only runs on the client
 
     const appID = parseInt(process.env.NEXT_PUBLIC_ZEGO_APP_ID);
     const serverSecret = process.env.NEXT_PUBLIC_ZEGO_SERVER_SECRET;
@@ -38,16 +45,15 @@ function Page() {
         data?.user?.name
       );
 
-      // create instance object from token
       const zp = ZegoUIKitPrebuilt.create(kitToken);
 
-      // start the call
+      // Start the call
       zp.joinRoom({
         container: element,
         sharedLinks: [
           {
             name: 'Copy link',
-            url: `${window.location.origin}${window.location.pathname}?roomID=${roomID}`,
+            url: `${window.location.origin}${window.location.pathname}?roomId=${roomID}`,
           },
         ],
         scenario: {
@@ -59,9 +65,17 @@ function Page() {
     }
   };
 
+  // Render nothing on the server
+  if (!isClient) {
+    return null;
+  }
+
   return (
-    <div className="-ml-14" ref={myMeeting} style={{width:"100vw", height:"100vh"}}>
-    </div>
+    <div
+      className="-ml-14"
+      ref={myMeeting}
+      style={{ width: "100vw", height: "100vh" }}
+    ></div>
   );
 }
 
