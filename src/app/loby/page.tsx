@@ -2,80 +2,67 @@
 import { useSession } from "next-auth/react";
 import { useSearchParams } from "next/navigation";
 import { ZegoUIKitPrebuilt } from "@zegocloud/zego-uikit-prebuilt";
-import { useEffect } from "react";
+import { generateToken04 } from "@/config/token";
+
+function randomID(len) {
+  let result = '';
+  if (result) return result;
+  var chars = '12345qwertyuiopasdfgh67890jklmnbvcxzMNBVCZXASDQWERTYHGFUIOLKJP',
+    maxPos = chars.length,
+    i;
+  len = len || 5;
+  for (i = 0; i < len; i++) {
+    result += chars.charAt(Math.floor(Math.random() * maxPos));
+  }
+  return result;
+}
+
+// get token
 
 function Page() {
   const { data } = useSession();
-  const roomId = useSearchParams().get("roomId");
+  const roomID = useSearchParams().get("roomId");
+  const userID = randomID(5);
 
-  useEffect(() => {
-    // Check if the required data is available before proceeding
-    if (!data || !data.user || !data.user.name || !roomId) {
-      return; // Exit early if any required data is not available
-    }
-
-    const appID = process.env.NEXT_PUBLIC_ZEGO_APP_ID;
-    const serverSecret = process.env.NEXT_PUBLIC_ZEGO_SERVER_SECRET;
-
-    if (!appID || !serverSecret) {
-      console.error("App ID or Server Secret is not set!");
-      return;
-    }
-
-    const uuid = Math.floor(Math.random() * (100000 - 10000 + 1)) + 10000;
+  let myMeeting = async (element: HTMLDivElement) => {
+    const appID = parseInt(process.env.NEXT_PUBLIC_ZEGO_APP_ID as string);
+    const serverSecret = process.env.NEXT_PUBLIC_ZEGO_SERVER_SECRET as string;
+    const experationTime = 3600;
+    // generate token
+    const token = generateToken04(appID, userID, serverSecret, experationTime);
 
     const kitToken = ZegoUIKitPrebuilt.generateKitTokenForProduction(
-      parseInt(appID as string),
-      serverSecret as string,
-      roomId as string,
-      uuid.toString(),
-      data.user.name as string,
+      appID,
+      token,
+      roomID as string,
+      userID,
+      data?.user?.name as string
     );
-
+    // create instance object from token
     const zp = ZegoUIKitPrebuilt.create(kitToken);
+    // start the call
+    zp.joinRoom({
+      container: element,
+      sharedLinks: [
+        {
+          name: 'Copy link',
+          url:
+            window.location.origin +
+            window.location.pathname +
+            '?roomID=' +
+            roomID,
+        },
+      ],
+      scenario: {
+        mode: ZegoUIKitPrebuilt.GroupCall, // To implement 1-on-1 calls, modify the parameter here to [ZegoUIKitPrebuilt.OneONoneCall].
+      },
+    });
+  };
 
-    if (!zp) {
-      console.error("Failed to create Zego UIKit instance");
-      return;
-    }
-
-    const element = document.getElementById("meeting-container");
-    if (element) {
-      zp.joinRoom({
-        container: element,
-        sharedLinks: [
-          {
-            name: "Copy link",
-            url: `${window.location.origin}/loby/${roomId}`,
-          },
-        ],
-        scenario: {
-          mode: ZegoUIKitPrebuilt.GroupCall,
-          config: {
-            role: ZegoUIKitPrebuilt.Host,
-          },
-        },
-        onUserAvatarSetter: (userList) => {
-          userList.forEach((user) => {
-            user.avatar = data?.user?.image as string;
-          });
-        },
-        branding: {
-          logoURL: `${window.location.origin}/logo.png`,
-        },
-        preJoinViewConfig: {
-          title: "Video",
-        },
-        showRemoveUserButton: true,
-        showInviteToCohostButton: true,
-        showRemoveCohostButton: true,
-        showRequestToCohostButton: true,
-        liveNotStartedTextForAudience: "Waiting for host to start the live",
-      });
-    }
-  }, [data, roomId]);
-
-  return <div className="w-full h-full mt-10" id="meeting-container"></div>;
+  return(
+    <div className="w-screen min-h-screen -ml-14" ref={myMeeting}>
+    </div>
+  );
 }
 
 export default Page;
